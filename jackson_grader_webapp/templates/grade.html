@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/static/icon.ico">
+  <title>학년 선택</title>
+  <style>
+    body { font-family: 'Arial', sans-serif; text-align: center; margin-top: 50px; }
+    h2 { font-size: 2em; margin-bottom: 20px; }
+    .btn { font-size: 1.2em; padding: 10px 20px; margin: 10px; border: none; border-radius: 10px; background: #2196F3; color: white; cursor: pointer; }
+    .btn:hover { background: #1976D2; }
+  </style>
+</head>
+<body>
+  <h2>{{ group_type }} 채점 - 학년을 선택하세요</h2>
+  <a href="/students?type={{ group_type }}&grade=중1"><button class="btn">중1</button></a>
+  <a href="/students?type={{ group_type }}&grade=중2"><button class="btn">중2</button></a>
+  <a href="/students?type={{ group_type }}&grade=중3"><button class="btn">중3</button></a>
+</body>
+</html>
