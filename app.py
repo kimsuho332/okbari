@@ -64,8 +64,25 @@ def submit_score():
     date = request.form.get("date")
     group_type = request.form.get("group_type")
     grade = request.form.get("grade")
-    answers = request.form.getlist("answers")
-    wrong = [str(i+1) for i, ans in enumerate(answers) if ans != "O"]
+    user_answers = request.form.getlist("answers")
+
+    correct_answers = []
+    try:
+        _, res = dbx.files_download("/scores.txt")
+        lines = res.content.decode("utf-8").splitlines()
+        for line in lines:
+            parts = line.strip().split(":")
+            if len(parts) >= 5 and parts[0] == date and parts[1] == name:
+                correct_answers = parts[4].split("/")
+                break
+    except:
+        pass
+
+    wrong = []
+    for i in range(len(correct_answers)):
+        if i >= len(user_answers) or user_answers[i].strip() != correct_answers[i].strip():
+            wrong.append(str(i + 1))
+
     result_entry = f"{date}:{name}:{group_type}:{grade}:{','.join(wrong) if wrong else '없음'}\n"
     try:
         content = ""
@@ -78,9 +95,9 @@ def submit_score():
         dbx.files_upload(content.encode("utf-8"), "/results.txt", mode=dropbox.files.WriteMode.overwrite)
     except Exception as e:
         print("Dropbox 저장 실패:", e)
+
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
