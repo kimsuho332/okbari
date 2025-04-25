@@ -96,7 +96,7 @@ def submit_score():
     except Exception as e:
         print("Dropbox 저장 실패:", e)
 
-    return redirect(url_for("index"))
+    return render_template("result.html", name=name, wrong=wrong)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
